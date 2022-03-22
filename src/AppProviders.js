@@ -2,6 +2,8 @@ import React from "react";
 import "./styles/main.scss";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
+import { AuthProvider } from "./context/auth-context";
+import { BrowserRouter as Router } from "react-router-dom";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -19,8 +21,12 @@ const queryClient = new QueryClient({
 export default function AppProviders({ children }) {
   return (
     <QueryClientProvider client={queryClient}>
-      {children}
-      <ReactQueryDevtools />
+      <AuthProvider>
+        <Router>
+          {children}
+          <ReactQueryDevtools />
+        </Router>
+      </AuthProvider>
     </QueryClientProvider>
   );
 }
