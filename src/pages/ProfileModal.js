@@ -3,8 +3,11 @@ import { Alert, Figure, Form, Modal, Row } from "react-bootstrap";
 import { useAuthUser } from "../context/auth-context";
 import { validate } from "../utils/validate";
 import { updateUserDetails } from "utils/api-client";
+import { uploadMedia } from "../utils/upload";
+import { useHistory } from "react-router-dom";
 
 export default function ProfileModal() {
+  const history = useHistory();
   const authUser = useAuthUser();
   const [isLoading, setLoading] = React.useState(false);
   const [error, setError] = React.useState(null);
@@ -15,6 +18,8 @@ export default function ProfileModal() {
   const url = authUser?.entities.url.urls[0]?.url;
   const [website, setWebsite] = React.useState(url);
   const [profile, setProfile] = React.useState(authUser?.profile_image_url_https);
+  
+  const redirected = new URLSearchParams(history.location.search).get("redirected")
 
   async function handleSubmit(event) {
     try {
@@ -34,10 +39,45 @@ export default function ProfileModal() {
         profile_image_url_https: profile
       }
       await updateUserDetails(user)
+      handleCloseModal();
     } catch (error) {
       setError(error.message)
     } finally {
       setLoading(false);
+    }
+  }
+
+  async function uploadProfileImage(event) {
+    const file = event.target.files[0];
+
+    if (file) {
+      const avatar = await uploadMedia({
+        type: "image",
+        file,
+        preset: "avatar_image"
+      })
+      setProfile(avatar);
+    }
+  }
+
+  function handleCloseModal() {
+    if (redirected === "true") {
+      history.push("/home");
+    } else {
+      history.goBack();
+    }
+  }
+
+  async function uploadCoverImage(event) {
+    const file = event.target.files[0];
+
+    if (file) {
+      const banner = await uploadMedia({
+        type: "image",
+        file,
+        preset: "cover_image"
+      })
+      setBanner(banner);
     }
   }
 
@@ -54,7 +94,7 @@ export default function ProfileModal() {
       <Modal.Header closeButton className="py-2">
         <Modal.Title>
           <small className="font-weight-bold">
-            {!"redirected" ? "Edit profile" : "Complete your profile"}
+            {!redirected ? "Edit profile" : "Complete your profile"}
           </small>
         </Modal.Title>
       </Modal.Header>
@@ -80,6 +120,7 @@ export default function ProfileModal() {
                 Edit cover image
               </label>
               <input
+                onChange={uploadCoverImage}
                 style={{ display: "none" }}
                 id="cover-image"
                 type="file"
@@ -96,6 +137,7 @@ export default function ProfileModal() {
                     <Figure.Image className="w-100 h-100" src={profile} />
                   </Figure>
                   <input
+                    onChange={uploadProfileImage}
                     style={{ display: "none" }}
                     id="profile-image"
                     type="file"
