@@ -8,14 +8,9 @@ import Spinner from "./Spinner";
 export default function Feed() {
   const { data: posts, isLoading, isSuccess } = useQuery("Posts", getPosts);
 
-  if (isLoading) return <Spinner />
-
-  console.log(posts, isSuccess);
-
-
   return (
     <>
-      <PostsList />
+      <PostsList posts={posts} isLoading={isLoading} isSuccess={isSuccess} />
       <div className="message text-info">You have reached the end!</div>
       <FollowCard
         noPop
