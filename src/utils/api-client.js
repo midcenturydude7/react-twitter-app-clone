@@ -31,7 +31,10 @@ export async function getReplies() {}
 
 export async function getUserTimeline() {}
 
-export function getPosts() {}
+export async function getPosts() {
+    return await client.get("/api/home_timeline")
+        .then(res => res.data.posts);
+}
 
 export async function getPostLikes() {}
 
@@ -63,6 +66,8 @@ export async function updateUserDetails(user) {
     await client.post("/api/updateuser", user)
 }
 
-export async function createPost() {}
+export async function createPost(post) {
+    await client.post("/api/post", post);
+}
 
 export async function getPostById() {}
