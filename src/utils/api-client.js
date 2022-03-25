@@ -1,4 +1,5 @@
 import axios from "axios";
+import { queryClient } from "../AppProviders";
 
 const client = axios.create();
 
@@ -54,9 +55,15 @@ export async function getTrends() {}
 
 export async function getSearchResults() {}
 
-export async function likePost() {}
+export async function likePost(post) {
+    await client.get(`/api/like/${post.id_str}`);
+    await queryClient.invalidateQueries("Posts")
+}
 
-export async function unlikePost() {}
+export async function unlikePost(post) {
+    await client.get(`/api/unlike/${post.id_str}`)
+    await queryClient.invalidateQueries("Posts")
+}
 
 export async function unrepostPost() {}
 
