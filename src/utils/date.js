@@ -1,4 +1,5 @@
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
+import format from "date-fns/format";
 
 // https://date-fns.org/v2.17.0/docs/formatDistanceToNow
 export function formatCreatedAt(timestamp) {
@@ -8,6 +9,8 @@ export function formatCreatedAt(timestamp) {
 }
 
 // https://date-fns.org/v2.17.0/docs/format
-export function formatDate() {}
+export function formatDate(timestamp) {
+  return format(new Date(timestamp), "MMM do, yyyy"); // Date formatted output example: March 25th, 2022
+}
 
 export function formatTime() {}
