@@ -7,13 +7,16 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import { Dropdown } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { likePost, unlikePost } from "../utils/api-client";
+import { likePost, repostPost, unlikePost, unrepostPost } from "../utils/api-client";
 
 export default function ReactionsBar({ post }) {
   function handleToggleLike() {
     post.favorited ? unlikePost(post) : likePost(post)
   }
 
+  function handleToggleRepost() {
+    post.retweeted ? unrepostPost(post) : repostPost(post);
+  }
 
   return (
     <div className="d-flex align-items-center">
@@ -30,7 +33,7 @@ export default function ReactionsBar({ post }) {
           <small className="m-1">{post.retweet_count}</small>
         </Dropdown.Toggle>
         <Dropdown.Menu alignRight className="higher-index rounded-0">
-          <Dropdown.Item className="high-index" as="button">
+          <Dropdown.Item onClick={handleToggleRepost} className="high-index" as="button">
             {post.retweeted ? "Undo Repost" : "Repost"}
           </Dropdown.Item>
           <Dropdown.Item
