@@ -10,8 +10,8 @@ import { isTextValid, validate } from "../utils/validate";
 
 export default function CreatePost() {
   const authUser = useAuthUser();
-  const [text, setText] = React.useState();
-  const [disabled, setDisabled] = React.useState();
+  const [text, setText] = React.useState("");
+  const [disabled, setDisabled] = React.useState("");
 
   function handleChange(event) {
     const text = event.target.value;
