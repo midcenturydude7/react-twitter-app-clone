@@ -13,4 +13,6 @@ export function formatDate(timestamp) {
   return format(new Date(timestamp), "MMM do, yyyy"); // Date formatted output example: March 25th, 2022
 }
 
-export function formatTime() {}
+export function formatTime(timestamp) {
+  return format(new Date(timestamp), "pp");
+}

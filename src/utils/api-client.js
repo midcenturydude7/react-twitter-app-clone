@@ -28,7 +28,10 @@ export function readNotification() {}
 
 export async function getPost() {}
 
-export async function getReplies() {}
+export async function getReplies(postId) {
+    return await client.get(`/api/post/${postId}/replies`)
+        .then(res => res.data.posts);
+}
 
 export async function getUserTimeline() {}
 
@@ -58,21 +61,25 @@ export async function getSearchResults() {}
 export async function likePost(post) {
     await client.get(`/api/like/${post.id_str}`);
     await queryClient.invalidateQueries("Posts")
+    await queryClient.invalidateQueries("PostDetail")
 }
 
 export async function unlikePost(post) {
     await client.get(`/api/unlike/${post.id_str}`)
     await queryClient.invalidateQueries("Posts")
+    await queryClient.invalidateQueries("PostDetail")
 }
 
 export async function unrepostPost(post) {
     await client.post(`/api/unrepost`, post);
     await queryClient.invalidateQueries("Posts")
+    await queryClient.invalidateQueries("PostDetail")
 }
 
 export async function repostPost(post) {
     await client.post(`/api/repost`, post);
     await queryClient.invalidateQueries("Posts")
+    await queryClient.invalidateQueries("PostDetail")
 }
 
 export async function updateUserDetails(user) {
