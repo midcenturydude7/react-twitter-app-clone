@@ -40,7 +40,10 @@ export async function getPosts() {
         .then(res => res.data.posts);
 }
 
-export async function getPostLikes() {}
+export async function getPostLikes(postId) {
+    return await client.get(`/api/post/${postId}/likes`)
+        .then(res => res.data.users);
+}
 
 export async function followUser() {}
 
