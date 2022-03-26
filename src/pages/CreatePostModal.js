@@ -16,8 +16,12 @@ export default function CreatePostModal() {
   const history = useHistory();
   const quoteId = new URLSearchParams(history.location.search).get("quote");
   const replyId = new URLSearchParams(history.location.search).get("reply_to");
-  const { data: quotePost } = useQuery("QuotePost", () => getPostById(quoteId));
-  const { data: replyPost } = useQuery("ReplyPost", () => getPostById(replyId));
+  const { data: quotePost } = useQuery("QuotePost", () => getPostById(quoteId), {
+    enabled: Boolean(quoteId)
+  });
+  const { data: replyPost } = useQuery("ReplyPost", () => getPostById(replyId), {
+    enabled: Boolean(replyId)
+  });
 
   const authUser = useAuthUser();
   const [text, setText] = React.useState("");
