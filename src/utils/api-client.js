@@ -60,7 +60,10 @@ export async function getUserFollowers() {}
 
 export async function getFriends() {}
 
-export async function getUserSuggestions() {}
+export async function getUserSuggestions() {
+    return await client.get("/api/users")
+        .then(res => res.data.users);
+}
 
 export async function getTrends() {}
 
