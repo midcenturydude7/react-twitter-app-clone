@@ -46,9 +46,17 @@ export async function getPostLikes(postId) {
         .then(res => res.data.users);
 }
 
-export async function followUser() {}
+export async function followUser(username) {
+    await client.get(`/api/follow/${username}`);
+    await queryClient.invalidateQueries("Posts")
+    await queryClient.invalidateQueries("UserSuggestions")
+}
 
-export async function unfollowUser() {}
+export async function unfollowUser(username) {
+    await client.get(`/api/unfollow/${username}`);
+    await queryClient.invalidateQueries("Posts")
+    await queryClient.invalidateQueries("UserSuggestions")
+}
 
 export async function getPostReposts(postId) {
     return await client
@@ -71,35 +79,35 @@ export async function getSearchResults() {}
 
 export async function likePost(post) {
     await client.get(`/api/like/${post.id_str}`);
-    await queryClient.invalidateQueries("Posts")
-    await queryClient.invalidateQueries("PostDetail")
+    await queryClient.invalidateQueries("Posts");
+    await queryClient.invalidateQueries("PostDetail");
 }
 
 export async function unlikePost(post) {
-    await client.get(`/api/unlike/${post.id_str}`)
-    await queryClient.invalidateQueries("Posts")
-    await queryClient.invalidateQueries("PostDetail")
+    await client.get(`/api/unlike/${post.id_str}`);
+    await queryClient.invalidateQueries("Posts");
+    await queryClient.invalidateQueries("PostDetail");
 }
 
 export async function unrepostPost(post) {
     await client.post(`/api/unrepost`, post);
-    await queryClient.invalidateQueries("Posts")
-    await queryClient.invalidateQueries("PostDetail")
+    await queryClient.invalidateQueries("Posts");
+    await queryClient.invalidateQueries("PostDetail");
 }
 
 export async function repostPost(post) {
     await client.post(`/api/repost`, post);
-    await queryClient.invalidateQueries("Posts")
-    await queryClient.invalidateQueries("PostDetail")
+    await queryClient.invalidateQueries("Posts");
+    await queryClient.invalidateQueries("PostDetail");
 }
 
 export async function updateUserDetails(user) {
-    await client.post("/api/updateuser", user)
+    await client.post("/api/updateuser", user);
 }
 
 export async function createPost(post, url = "/api/post") {
     await client.post(url, post);
-    await queryClient.invalidateQueries("Posts")
+    await queryClient.invalidateQueries("Posts");
 }
 
 export async function getPostById(postId) {
